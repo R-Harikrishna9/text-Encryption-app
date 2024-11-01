@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Encryption Application</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Optional CSS -->
+</head>
+<body>
+    <h1>Text Encryption Application</h1>
+
+    <div class="section">
+        <h2>Encrypt Text</h2>
+        <label for="textInput">Text to Encrypt:</label>
+        <textarea id="textInput" rows="4" cols="50"></textarea>
+        <br>
+        <label for="keyInputEncrypt">Encryption Key:</label>
+        <input type="text" id="keyInputEncrypt" placeholder="Use letters, numbers, and special characters"/>
+        <br>
+        <button onclick="encryptText()">Encrypt</button>
+        <h3>Encrypted Output:</h3>
+        <div id="outputEncrypt"></div>
+    </div>
+
+    <div class="section">
+        <h2>Decrypt Text</h2>
+        <label for="encryptedInput">Encrypted Text:</label>
+        <textarea id="encryptedInput" rows="4" cols="50"></textarea>
+        <br>
+        <label for="keyInputDecrypt">Decryption Key:</label>
+        <input type="text" id="keyInputDecrypt" placeholder="Use same key as for encryption"/>
+        <br>
+        <button onclick="decryptText()">Decrypt</button>
+        <h3>Decrypted Output:</h3>
+        <div id="outputDecrypt"></div>
+    </div>
+
+    <script>
+        async function encryptText() {
+            const text = document.getElementById("textInput").value;
+            const key = document.getElementById("keyInputEncrypt").value;
+
+            const response = await fetch('http://localhost:5000/encrypt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text, key }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                document.getElementById("outputEncrypt").innerText = data.encryptedText;
+            } else {
+                document.getElementById("outputEncrypt").innerText = "Error: " + data.error;
+            }
+        }
+
+        async function decryptText() {
+            const encryptedText = document.getElementById("encryptedInput").value;
+            const key = document.getElementById("keyInputDecrypt").value;
+
+            const response = await fetch('http://localhost:5000/decrypt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ encryptedText, key }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                document.getElementById("outputDecrypt").innerText = data.decryptedText;
+            } else {
+                document.getElementById("outputDecrypt").innerText = "Error: " + data.error;
+            }
+        }
+    </script>
+</body>
+</html>
