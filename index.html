@@ -40,19 +40,23 @@
             const text = document.getElementById("textInput").value;
             const key = document.getElementById("keyInputEncrypt").value;
 
-            const response = await fetch('http://localhost:5000/encrypt', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ text, key }),
-            });
+            try {
+                const response = await fetch('http://localhost:5000/encrypt', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text, key }),
+                });
 
-            const data = await response.json();
-            if (response.ok) {
-                document.getElementById("outputEncrypt").innerText = data.encryptedText;
-            } else {
-                document.getElementById("outputEncrypt").innerText = "Error: " + data.error;
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                document.getElementById("outputEncrypt").innerText = data.encryptedText || 'No encrypted text returned';
+            } catch (error) {
+                document.getElementById("outputEncrypt").innerText = "Error: " + error.message;
             }
         }
 
@@ -60,19 +64,23 @@
             const encryptedText = document.getElementById("encryptedInput").value;
             const key = document.getElementById("keyInputDecrypt").value;
 
-            const response = await fetch('http://localhost:5000/decrypt', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ encryptedText, key }),
-            });
+            try {
+                const response = await fetch('http://localhost:5000/decrypt', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ encryptedText, key }),
+                });
 
-            const data = await response.json();
-            if (response.ok) {
-                document.getElementById("outputDecrypt").innerText = data.decryptedText;
-            } else {
-                document.getElementById("outputDecrypt").innerText = "Error: " + data.error;
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                document.getElementById("outputDecrypt").innerText = data.decryptedText || 'No decrypted text returned';
+            } catch (error) {
+                document.getElementById("outputDecrypt").innerText = "Error: " + error.message;
             }
         }
     </script>
