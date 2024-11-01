@@ -1,0 +1,16 @@
+{
+    "name": "text-encryption-app",
+    "version": "1.0.0",
+    "description": "A simple web application for text encryption and decryption.",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "crypto-js": "^4.0.0",
+        "express": "^4.17.1",
+        "mongoose": "^5.10.0"
+    }
+}
