@@ -79,7 +79,7 @@
         <textarea id="encryptedInput" rows="4" cols="50"></textarea>
         <br>
         <label for="keyInputDecrypt">Decryption Key:</label>
-        <input type="text" id="keyInputDecrypt" placeholder="Use same key as for encryption"/>
+        <input type="text" id="keyInputDecrypt" placeholder="Use the same key as for encryption"/>
         <br>
         <button onclick="decryptText()">Decrypt</button>
         <h3>Decrypted Output:</h3>
@@ -101,7 +101,8 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! Status: ${response.status}, ${errorText}`);
                 }
 
                 const data = await response.json();
@@ -125,7 +126,8 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! Status: ${response.status}, ${errorText}`);
                 }
 
                 const data = await response.json();
