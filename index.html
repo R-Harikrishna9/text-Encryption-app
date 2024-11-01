@@ -19,7 +19,7 @@
         <br>
         <button onclick="encryptText()">Encrypt</button>
         <h3>Encrypted Output:</h3>
-        <div id="outputEncrypt"></div>
+        <div id="outputEncrypt" class="output"></div> <!-- Encrypted Output Field -->
     </div>
 
     <div class="section">
@@ -32,7 +32,7 @@
         <br>
         <button onclick="decryptText()">Decrypt</button>
         <h3>Decrypted Output:</h3>
-        <div id="outputDecrypt"></div>
+        <div id="outputDecrypt" class="output"></div> <!-- Decrypted Output Field -->
     </div>
 
     <script>
@@ -76,5 +76,15 @@
             }
         }
     </script>
+
+    <style>
+        .output {
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+            margin-top: 10px;
+            min-height: 50px; /* Minimum height for the output fields */
+        }
+    </style>
 </body>
 </html>
