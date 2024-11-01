@@ -15,7 +15,9 @@ app.use(bodyParser.json());
 mongoose.connect('mongodb://localhost:27017/encryptionDB', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-});
+})
+.then(() => console.log("MongoDB connected successfully"))
+.catch(err => console.error("MongoDB connection error:", err));
 
 // Schema and Model
 const encryptedDataSchema = new mongoose.Schema({
@@ -37,10 +39,14 @@ app.post('/encrypt', async (req, res) => {
     const encryptedText = CryptoJS.AES.encrypt(text, key).toString();
 
     // Save to the database
-    const newEntry = new EncryptedData({ text, key, encryptedText });
-    await newEntry.save();
-
-    res.json({ encryptedText });
+    try {
+        const newEntry = new EncryptedData({ text, key, encryptedText });
+        await newEntry.save();
+        res.json({ encryptedText });
+    } catch (error) {
+        console.error("Error saving to database:", error);
+        res.status(500).json({ error: 'Error saving encrypted text to database' });
+    }
 });
 
 // Endpoint to decrypt text
